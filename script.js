@@ -200,6 +200,7 @@ else if (operation === "division") {
 }
     document.getElementById("timerDisplay").textContent =
         "⏳ " + timerValue;
+    startTimer();
 
 }
 // =======================================
@@ -207,7 +208,7 @@ else if (operation === "division") {
 // =======================================
 
 function submitAnswer() {
-
+    clearInterval(timerInterval);
     const userAnswer =
         parseInt(document.getElementById("answerInput").value);
 
@@ -227,7 +228,7 @@ function submitAnswer() {
 // =======================================
 
 function skipQuestion() {
-
+    clearInterval(timerInterval);
     unanswered++;
 
     loadNextQuestion();
@@ -259,5 +260,53 @@ function showResults() {
 
         <h2>🎯 Score : ${totalScore}%</h2>
     `;
+
+}
+// =======================================
+// Start Countdown Timer
+// =======================================
+
+function startTimer() {
+
+    // Stop any existing timer
+    clearInterval(timerInterval);
+
+    let secondsLeft = timerValue;
+
+    document.getElementById("timerDisplay").textContent =
+        "⏳ " + secondsLeft;
+
+    timerInterval = setInterval(function () {
+
+        secondsLeft--;
+
+        document.getElementById("timerDisplay").textContent =
+            "⏳ " + secondsLeft;
+
+        // Last 5 seconds
+        if (secondsLeft <= 5 && secondsLeft > 0) {
+
+            // Temporary beep using browser
+            try {
+                const audio = new Audio(
+                    "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEA"
+                );
+                audio.play().catch(() => {});
+            } catch (e) {
+                // Ignore if browser blocks autoplay
+            }
+        }
+
+        // Time up
+        if (secondsLeft <= 0) {
+
+            clearInterval(timerInterval);
+
+            unanswered++;
+
+            loadNextQuestion();
+        }
+
+    }, 1000);
 
 }
