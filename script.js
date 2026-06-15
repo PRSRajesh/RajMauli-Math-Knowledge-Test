@@ -338,7 +338,7 @@ function startTimer() {
             // Temporary beep using browser
             try {
                 const audio = new Audio(
-                    "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEA"
+                    "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
                 );
                 audio.play().catch(() => {});
             } catch (e) {
