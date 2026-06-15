@@ -83,7 +83,7 @@ function startQuiz() {
     document.getElementById("settingsPage").classList.add("hidden");
     document.getElementById("quizPage").classList.remove("hidden");
     document.getElementById("resultPage").classList.add("hidden");
-
+    clearInterval(timerInterval);
     // Load the first question
     loadNextQuestion();
 }
@@ -131,30 +131,73 @@ function loadNextQuestion() {
     let num1 = randomNumber(digits);
     let num2 = randomNumber(digits);
 
-    if (selectedOperation === "addition") {
+// Mixed mode chooses a random operation
+let operation = selectedOperation;
 
-        currentAnswer = num1 + num2;
+if (selectedOperation === "mixed") {
+    const ops = ["addition", "subtraction", "multiplication", "division"];
+    operation = ops[Math.floor(Math.random() * ops.length)];
+}
 
-        document.getElementById("questionBox").innerHTML =
-            `
-            <div style="font-size:70px;font-weight:bold;">
-                ${num1} + ${num2} = ?
-            </div>
-            `;
+// Addition
+if (operation === "addition") {
 
-    } else {
+    currentAnswer = num1 + num2;
 
-        document.getElementById("questionBox").innerHTML =
-            `
-            <div style="font-size:50px;">
-                ${selectedOperation.toUpperCase()}
-                <br><br>
-                Coming Soon...
-            </div>
-            `;
+    document.getElementById("questionBox").innerHTML =
+        `<div style="font-size:70px;font-weight:bold;">
+            ${num1} + ${num2} = ?
+        </div>`;
+}
 
+// Subtraction
+else if (operation === "subtraction") {
+
+    if (num2 > num1) {
+        [num1, num2] = [num2, num1];
     }
 
+    currentAnswer = num1 - num2;
+
+    document.getElementById("questionBox").innerHTML =
+        `<div style="font-size:70px;font-weight:bold;">
+            ${num1} − ${num2} = ?
+        </div>`;
+}
+
+// Multiplication
+else if (operation === "multiplication") {
+
+    const tableLimit =
+        parseInt(document.getElementById("tableLimit").value, 10);
+
+    num1 = Math.floor(Math.random() * tableLimit) + 1;
+    num2 = Math.floor(Math.random() * 10) + 1;
+
+    currentAnswer = num1 * num2;
+
+    document.getElementById("questionBox").innerHTML =
+        `<div style="font-size:70px;font-weight:bold;">
+            ${num1} × ${num2} = ?
+        </div>`;
+}
+
+// Division
+else if (operation === "division") {
+
+    const divisor = Math.floor(Math.random() * 9) + 1;
+    const quotient = Math.floor(Math.random() * 10) + 1;
+
+    num1 = divisor * quotient;
+    num2 = divisor;
+
+    currentAnswer = quotient;
+
+    document.getElementById("questionBox").innerHTML =
+        `<div style="font-size:70px;font-weight:bold;">
+            ${num1} ÷ ${num2} = ?
+        </div>`;
+}
     document.getElementById("timerDisplay").textContent =
         "⏳ " + timerValue;
 
