@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 RajMauli Math Knowledge Test</title>
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- PWA (optional for later) -->
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#4CAF50">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ===========================
+         HEADER
+    ============================ -->
+
+    <header>
+        <h1 class="title">
+            🧠 RajMauli Math Knowledge Test
+        </h1>
+
+        <p class="subtitle">
+            Learn Fast • Think Smart • Have Fun 🚀
+        </p>
+    </header>
+
+    <!-- ===========================
+         HOME PAGE
+    ============================ -->
+
+    <section id="homePage">
+
+        <div class="card-grid">
+
+            <button class="menu-card addition"
+                    onclick="selectOperation('addition')">
+                ➕
+                <span>Addition</span>
+            </button>
+
+            <button class="menu-card subtraction"
+                    onclick="selectOperation('subtraction')">
+                ➖
+                <span>Subtraction</span>
+            </button>
+
+            <button class="menu-card multiplication"
+                    onclick="selectOperation('multiplication')">
+                ✖️
+                <span>Multiplication</span>
+            </button>
+
+            <button class="menu-card division"
+                    onclick="selectOperation('division')">
+                ➗
+                <span>Division</span>
+            </button>
+
+            <button class="menu-card mixed"
+                    onclick="selectOperation('mixed')">
+                🎲
+                <span>Mixed Quiz</span>
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- ===========================
+         SETTINGS PAGE
+    ============================ -->
+
+    <section id="settingsPage" class="hidden">
+
+        <h2>⚙️ Quiz Settings</h2>
+
+        <div class="settings-box">
+
+            <label>🔢 Number of Digits</label>
+
+            <select id="digits">
+                <option value="1">1 Digit</option>
+                <option value="2">2 Digits</option>
+                <option value="3">3 Digits</option>
+                <option value="4">4 Digits</option>
+                <option value="5">5 Digits</option>
+            </select>
+
+            <label>📋 Number of Questions</label>
+
+            <select id="questionCount">
+                <option>10</option>
+                <option>20</option>
+                <option>30</option>
+                <option>50</option>
+            </select>
+
+            <label>⏳ Timer Per Question</label>
+
+            <select id="timer">
+                <option>5</option>
+                <option selected>10</option>
+                <option>15</option>
+                <option>20</option>
+                <option>30</option>
+            </select>
+
+            <label>✖️ Multiplication Tables Up To</label>
+
+            <input
+                id="tableLimit"
+                type="number"
+                min="2"
+                max="100"
+                value="10"
+            >
+
+            <div class="button-row">
+
+                <button
+                    class="primary-btn"
+                    onclick="startQuiz()">
+                    🚀 Start Quiz
+                </button>
+
+                <button
+                    class="secondary-btn"
+                    onclick="goHome()">
+                    ⬅️ Back
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ===========================
+         QUIZ PAGE
+    ============================ -->
+
+    <section id="quizPage" class="hidden">
+
+        <div id="progress">
+            Question 1 / 10
+        </div>
+
+        <div id="timerDisplay">
+            ⏳ 10
+        </div>
+
+        <div id="questionBox">
+            45 + 27 = ?
+        </div>
+
+        <input
+            id="answerInput"
+            type="number"
+            placeholder="Type your answer"
+            autocomplete="off"
+        >
+
+        <div class="button-row">
+
+            <button
+                class="primary-btn"
+                onclick="submitAnswer()">
+                ✅ Submit
+            </button>
+
+            <button
+                class="secondary-btn"
+                onclick="skipQuestion()">
+                ⏭️ Skip
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- ===========================
+         RESULT PAGE
+    ============================ -->
+
+    <section id="resultPage" class="hidden">
+
+        <h2>
+            🎉 Quiz Completed!
+        </h2>
+
+        <div id="summary">
+
+            <p>Correct : 0</p>
+
+            <p>Wrong : 0</p>
+
+            <p>Timed Out : 0</p>
+
+            <p>Score : 0%</p>
+
+        </div>
+
+        <div class="button-row">
+
+            <button
+                class="primary-btn"
+                onclick="goHome()">
+                🏠 Home
+            </button>
+
+            <button
+                class="secondary-btn"
+                onclick="startQuiz()">
+                🔄 Play Again
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+<!-- Future JavaScript -->
+<script src="script.js"></script>
+
+</body>
+</html>

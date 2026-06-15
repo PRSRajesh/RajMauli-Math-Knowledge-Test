@@ -1,0 +1,229 @@
+```css
+/* ==========================================
+   RajMauli Math Knowledge Test
+   style.css
+   ========================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #dff6ff, #fff8d6);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    text-align: center;
+}
+
+.title {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    margin-bottom: 30px;
+}
+
+/* ===============================
+   HOME BUTTON GRID
+   =============================== */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.menu-btn {
+    border: none;
+    border-radius: 20px;
+    padding: 28px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-height: 160px;
+}
+
+.menu-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.addition {
+    background: #c8f7c5;
+}
+
+.subtraction {
+    background: #ffd8b1;
+}
+
+.multiplication {
+    background: #d8d4ff;
+}
+
+.division {
+    background: #ffe5ec;
+}
+
+.mixed {
+    background: #fff3b0;
+}
+
+/* ===============================
+   SETTINGS
+   =============================== */
+
+label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+select,
+input[type="number"] {
+    width: min(400px, 90%);
+    padding: 14px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    border: 2px solid #bbb;
+}
+
+.start-btn,
+.back-btn,
+.submit-btn,
+.restart-btn {
+    margin: 12px;
+    padding: 16px 34px;
+    font-size: 1.3rem;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.start-btn {
+    background: #2ecc71;
+    color: white;
+}
+
+.back-btn {
+    background: #95a5a6;
+    color: white;
+}
+
+.submit-btn {
+    background: #3498db;
+    color: white;
+}
+
+.restart-btn {
+    background: #9b59b6;
+    color: white;
+}
+
+.start-btn:hover,
+.back-btn:hover,
+.submit-btn:hover,
+.restart-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ===============================
+   QUIZ
+   =============================== */
+
+#progress {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+#timerDisplay {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+#questionBox {
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: bold;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+#answerInput {
+    width: min(500px, 90%);
+    padding: 18px;
+    font-size: 2rem;
+    text-align: center;
+    border-radius: 14px;
+    border: 3px solid #3498db;
+}
+
+/* ===============================
+   RESULTS
+   =============================== */
+
+#summary {
+    margin: 25px auto;
+    max-width: 700px;
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    font-size: 1.4rem;
+    line-height: 1.8;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* ===============================
+   UTILITIES
+   =============================== */
+
+.hidden {
+    display: none !important;
+}
+
+/* ===============================
+   MOBILE
+   =============================== */
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .menu-btn {
+        min-height: 130px;
+        font-size: 1.5rem;
+    }
+
+    #questionBox {
+        font-size: clamp(2.2rem, 10vw, 3.5rem);
+        padding: 20px;
+    }
+
+    #answerInput {
+        font-size: 1.7rem;
+    }
+
+    #timerDisplay {
+        font-size: 2rem;
+    }
+}
+```
