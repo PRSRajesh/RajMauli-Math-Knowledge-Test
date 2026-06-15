@@ -209,16 +209,34 @@ else if (operation === "division") {
 
 function submitAnswer() {
     clearInterval(timerInterval);
-    const userAnswer =
-        parseInt(document.getElementById("answerInput").value);
+    const answerText =
+        document.getElementById("answerInput").value.trim();
 
-    if (userAnswer === currentAnswer) {
-        correctAnswers++;
-    } else {
-        wrongAnswers++;
-    }
+    if (answerText === "") {
+        unanswered++;
+        loadNextQuestion();
+        return;
+}
 
-    loadNextQuestion();
+    const userAnswer = parseInt(answerText, 10);
+
+if (userAnswer === currentAnswer) {
+
+    correctAnswers++;
+
+    document.getElementById("questionBox").innerHTML =
+        "<span style='color:green;'>🎉 Excellent! 🎉</span>";
+
+} else {
+
+    wrongAnswers++;
+
+    document.getElementById("questionBox").innerHTML =
+        "<span style='color:red;'>❌ Wrong Answer</span>";
+}
+
+    // Wait 0.8 seconds before loading the next question
+    setTimeout(loadNextQuestion, 800);
 
 }
 
@@ -246,20 +264,30 @@ function showResults() {
 
     document.getElementById("resultPage").classList.remove("hidden");
 
-    const totalScore =
-        Math.round((correctAnswers / totalQuestions) * 100);
+const totalScore =
+    Math.round((correctAnswers / totalQuestions) * 100);
 
-    document.getElementById("summary").innerHTML = `
-        <h2>🏆 Result Summary</h2>
+let medal = "🥉 Bronze";
 
-        <h3>✅ Correct : ${correctAnswers}</h3>
+if (totalScore >= 90) {
+    medal = "🥇 Gold";
+} else if (totalScore >= 75) {
+    medal = "🥈 Silver";
+}
 
-        <h3>❌ Wrong : ${wrongAnswers}</h3>
+document.getElementById("summary").innerHTML = `
+    <h2>${medal} Quiz Completed!</h2>
 
-        <h3>⏭️ Skipped : ${unanswered}</h3>
+    <h3>✅ Correct : ${correctAnswers}</h3>
 
-        <h2>🎯 Score : ${totalScore}%</h2>
-    `;
+    <h3>❌ Wrong : ${wrongAnswers}</h3>
+
+    <h3>⏰ Unanswered : ${unanswered}</h3>
+
+    <h2>🎯 Score : ${totalScore}%</h2>
+
+    <h2>${medal}</h2>
+`;
 
 }
 // =======================================
@@ -310,3 +338,17 @@ function startTimer() {
     }, 1000);
 
 }
+// =======================================
+// Press ENTER to Submit
+// =======================================
+
+document.addEventListener("keydown", function (event) {
+
+    const quizVisible =
+        !document.getElementById("quizPage").classList.contains("hidden");
+
+    if (quizVisible && event.key === "Enter") {
+        submitAnswer();
+    }
+
+});
