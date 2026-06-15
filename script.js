@@ -231,8 +231,16 @@ if (userAnswer === currentAnswer) {
 
     wrongAnswers++;
 
-    document.getElementById("questionBox").innerHTML =
-        "<span style='color:red;'>❌ Wrong Answer</span>";
+document.getElementById("questionBox").innerHTML =
+    `
+    <div style="font-size:50px;color:red;font-weight:bold;">
+        ❌ Wrong!
+        <br><br>
+        ✅ Correct Answer:
+        <br>
+        ${currentAnswer}
+    </div>
+    `;
 }
 
     // Wait 0.8 seconds before loading the next question
@@ -288,7 +296,20 @@ document.getElementById("summary").innerHTML = `
 
     <h2>${medal}</h2>
 `;
+    let bestScore = localStorage.getItem("bestScore");
 
+    if (bestScore === null || totalScore > parseInt(bestScore, 10)) {
+        localStorage.setItem("bestScore", totalScore);
+        bestScore = totalScore;
+    }
+
+    document.getElementById("summary").innerHTML += `
+        <hr>
+        <h3>🏅 Best Score: ${bestScore}%</h3>
+    `;
+    if (totalScore === 100) {
+        alert("🎉 Outstanding! Perfect Score! 🎉");
+    }
 }
 // =======================================
 // Start Countdown Timer
