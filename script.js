@@ -29,6 +29,54 @@ function goHome() {
 
 }
 
+function speak(text) {
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    let voices = window.speechSynthesis.getVoices();
+
+    // Try to pick a female-like voice
+    let femaleVoice =
+        voices.find(v =>
+            v.name.toLowerCase().includes("female") ||
+            v.name.toLowerCase().includes("google uk english female") ||
+            v.name.toLowerCase().includes("samantha") ||   // iOS
+            v.name.toLowerCase().includes("zira") ||       // Windows
+            v.lang === "en-IN" ||
+            v.lang === "en-US"
+        );
+
+    if (femaleVoice) {
+        utterance.voice = femaleVoice;
+    }
+
+    utterance.rate = 0.9;   // slightly slow for kids learning
+    utterance.pitch = 1.2;  // higher pitch = more “female-like”
+    utterance.volume = 1;
+
+    speechSynthesis.speak(utterance);
+}
+
+let speakText = "";
+
+if (operation === "addition") {
+    speakText = `${num1} plus ${num2} equals what?`;
+}
+else if (operation === "subtraction") {
+    speakText = `${num1} minus ${num2} equals what?`;
+}
+else if (operation === "multiplication") {
+    speakText = `${num1} multiplied by ${num2} equals what?`;
+}
+else if (operation === "division") {
+    speakText = `${num1} divided by ${num2} equals what?`;
+}
+
+
+window.speechSynthesis.onvoiceschanged = () => {
+    window.speechSynthesis.getVoices();
+};
+
 // ----------------------------
 // Select Quiz Type
 // ----------------------------
@@ -145,7 +193,7 @@ if (operation === "addition") {
     currentAnswer = num1 + num2;
 
     document.getElementById("questionBox").innerHTML =
-        `<div style="font-size:70px;font-weight:bold;">
+        `<div style="font-size:clamp(28px, 6vw, 70px);font-weight:bold;">
             ${num1} + ${num2} = ?
         </div>`;
 }
@@ -160,7 +208,7 @@ else if (operation === "subtraction") {
     currentAnswer = num1 - num2;
 
     document.getElementById("questionBox").innerHTML =
-        `<div style="font-size:70px;font-weight:bold;">
+        `<div style="font-size:clamp(28px, 6vw, 70px);font-weight:bold;">
             ${num1} − ${num2} = ?
         </div>`;
 }
@@ -169,15 +217,15 @@ else if (operation === "subtraction") {
 else if (operation === "multiplication") {
 
     const tableLimit =
-        parseInt(document.getElementById("tableLimit").value, 10);
+        parseInt(document.getElementById("tableLimit")?.value, 10) || 10;
 
     num1 = Math.floor(Math.random() * tableLimit) + 1;
-    num2 = Math.floor(Math.random() * 10) + 1;
+    num2 = Math.floor(Math.random() * tableLimit) + 1;
 
     currentAnswer = num1 * num2;
 
     document.getElementById("questionBox").innerHTML =
-        `<div style="font-size:70px;font-weight:bold;">
+        `<div style="font-size:clamp(28px, 6vw, 70px);font-weight:bold;">
             ${num1} × ${num2} = ?
         </div>`;
 }
@@ -186,7 +234,7 @@ else if (operation === "multiplication") {
 else if (operation === "division") {
 
     const divisor = Math.floor(Math.random() * 9) + 1;
-    const quotient = Math.floor(Math.random() * 10) + 1;
+    const quotient = Math.floor(Math.random() * 12) + 1;
 
     num1 = divisor * quotient;
     num2 = divisor;
@@ -194,13 +242,15 @@ else if (operation === "division") {
     currentAnswer = quotient;
 
     document.getElementById("questionBox").innerHTML =
-        `<div style="font-size:70px;font-weight:bold;">
+        `<div style="font-size:clamp(28px, 6vw, 70px);font-weight:bold;">
             ${num1} ÷ ${num2} = ?
         </div>`;
 }
     document.getElementById("timerDisplay").textContent =
         "⏳ " + timerValue;
-    startTimer();
+
+    speak(speakText);
+	startTimer();
 
 }
 // =======================================
@@ -256,9 +306,8 @@ document.getElementById("questionBox").innerHTML =
 function skipQuestion() {
     clearInterval(timerInterval);
     unanswered++;
-
+    document.getElementById("answerInput").value = "";
     loadNextQuestion();
-
 }
 
 
@@ -367,7 +416,8 @@ document.addEventListener("keydown", function (event) {
 
     const quizVisible =
         !document.getElementById("quizPage").classList.contains("hidden");
-
+    const resultVisible =
+        !document.getElementById("resultPage").classList.contains("hidden");
     if (quizVisible && event.key === "Enter") {
         submitAnswer();
     }
