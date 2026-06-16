@@ -277,4 +277,59 @@ input[type="number"] {
     transform: scale(1.05);
     transition: 0.2s;
 }
+.menu-card {
+    font-size: 28px;
+    padding: 18px 30px;
+    border-radius: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    margin: 10px;
+    transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.menu-card {
+    font-size: clamp(18px, 3.5vw, 28px);
+    padding: clamp(12px, 3vw, 18px) clamp(20px, 5vw, 40px);
+    border-radius: 20px;
+    min-width: 180px;
+}
+.menu-card.addition {
+    background: #4CAF50;
+    color: white;
+}
+
+.menu-card.subtraction {
+    background: #FF9800;
+    color: white;
+}
+
+.menu-card.multiplication {
+    background: #9C27B0;
+    color: white;
+}
+
+.menu-card.division {
+    background: #2196F3;
+    color: white;
+}
+
+.menu-card.mixed {
+    background: #E91E63;
+    color: white;
+}
+.menu-card:hover {
+    transform: scale(1.05);
+    transition: 0.2s;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
 ```

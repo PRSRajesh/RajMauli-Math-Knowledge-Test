@@ -4,10 +4,11 @@
 // =======================================
 
 let selectedOperation = "addition";
-
+let isPaused = false;
+let pauseTimerRef = null;
 let totalQuestions = 10;
 let currentQuestion = 0;
-
+let currentQuestionText = "";
 let correctAnswers = 0;
 let wrongAnswers = 0;
 let unanswered = 0;
@@ -180,7 +181,7 @@ if (selectedOperation === "mixed") {
 if (operation === "addition") {
 
     currentAnswer = num1 + num2;
-
+    currentQuestionText = `${num1} + ${num2} = ?`;
     document.getElementById("questionBox").innerHTML =
         `<div style="font-size:clamp(28px, 6vw, 70px);font-weight:bold;">
             ${num1} + ${num2} = ?
@@ -195,7 +196,7 @@ else if (operation === "subtraction") {
     }
 
     currentAnswer = num1 - num2;
-
+    currentQuestionText = `${num1} - ${num2} = ?`;
     document.getElementById("questionBox").innerHTML =
         `<div style="font-size:clamp(28px, 6vw, 70px);font-weight:bold;">
             ${num1} − ${num2} = ?
@@ -212,7 +213,7 @@ else if (operation === "multiplication") {
     num2 = Math.floor(Math.random() * tableLimit) + 1;
 
     currentAnswer = num1 * num2;
-
+    currentQuestionText = `${num1} * ${num2} = ?`;
     document.getElementById("questionBox").innerHTML =
         `<div style="font-size:clamp(28px, 6vw, 70px);font-weight:bold;">
             ${num1} × ${num2} = ?
@@ -229,7 +230,7 @@ else if (operation === "division") {
     num2 = divisor;
 
     currentAnswer = quotient;
-
+    currentQuestionText = `${num1} ÷ ${num2} = ?`;
     document.getElementById("questionBox").innerHTML =
         `<div style="font-size:clamp(28px, 6vw, 70px);font-weight:bold;">
             ${num1} ÷ ${num2} = ?
@@ -280,7 +281,16 @@ if (userAnswer === currentAnswer) {
     correctAnswers++;
 
     document.getElementById("questionBox").innerHTML =
-        "<span style='color:green;'>🎉 Excellent! 🎉</span>";
+	`
+    <div style="font-size:40px;color:green;font-weight:bold;">
+        ✅ Correct
+        <br><br>
+		📌 Question:
+        <br>
+        ${currentQuestionText}
+        <br>
+    </div>
+    `;
     speak("Correct! Excellent job!");
 } else {
 
@@ -288,11 +298,17 @@ if (userAnswer === currentAnswer) {
 
 document.getElementById("questionBox").innerHTML =
     `
-    <div style="font-size:50px;color:red;font-weight:bold;">
+    <div style="font-size:40px;color:red;font-weight:bold;">
         ❌ Wrong!
+        <br><br>
+		📌 Question:
+        <br>
+        ${currentQuestionText}
+    
         <br><br>
         ✅ Correct Answer:
         <br>
+		
         ${currentAnswer}
     </div>
     `;
@@ -316,7 +332,29 @@ function skipQuestion() {
     loadNextQuestion();
 }
 
+// =======================================
+// Pause Question
+// =======================================
 
+function togglePause() {
+
+    isPaused = !isPaused;
+
+    if (isPaused) {
+
+        clearInterval(timerInterval);
+        speak("Quiz paused");
+
+        document.getElementById("questionBox").innerHTML =
+            "<h2>⏸️ Quiz Paused</h2>";
+
+    } else {
+
+        speak("Quiz resumed");
+        startTimer();
+        loadNextQuestion();
+    }
+}
 // =======================================
 // Show Final Results
 // =======================================
