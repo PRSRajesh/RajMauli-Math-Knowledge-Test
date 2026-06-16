@@ -17,6 +17,13 @@ let currentAnswer = 0;
 let timerValue = 10;
 let timerInterval = null;
 
+window.speechSynthesis.onvoiceschanged = () => {
+    window.speechSynthesis.getVoices();
+};
+document.addEventListener("click", function initVoice() {
+    window.speechSynthesis.getVoices();
+    document.removeEventListener("click", initVoice);
+});
 // ----------------------------
 // Show Home Page
 // ----------------------------
@@ -31,47 +38,26 @@ function goHome() {
 
 function speak(text) {
 
+    if (!text) return;
+
+    window.speechSynthesis.cancel();
+
     const utterance = new SpeechSynthesisUtterance(text);
 
-    let voices = window.speechSynthesis.getVoices();
+    const voices = window.speechSynthesis.getVoices();
 
-    // Try to pick a female-like voice
-    let femaleVoice =
-        voices.find(v =>
-            v.name.toLowerCase().includes("female") ||
-            v.name.toLowerCase().includes("google uk english female") ||
-            v.name.toLowerCase().includes("samantha") ||   // iOS
-            v.name.toLowerCase().includes("zira") ||       // Windows
-            v.lang === "en-IN" ||
-            v.lang === "en-US"
-        );
-
-    if (femaleVoice) {
-        utterance.voice = femaleVoice;
+    if (voices.length > 0) {
+        utterance.voice = voices[0]; // fallback safest
     }
 
-    utterance.rate = 0.9;   // slightly slow for kids learning
-    utterance.pitch = 1.2;  // higher pitch = more “female-like”
+    utterance.pitch = 1.3;
+    utterance.rate = 0.9;
     utterance.volume = 1;
 
-    speechSynthesis.speak(utterance);
+    setTimeout(() => {
+        window.speechSynthesis.speak(utterance);
+    }, 100);
 }
-
-let speakText = "";
-
-if (operation === "addition") {
-    speakText = `${num1} plus ${num2} equals what?`;
-}
-else if (operation === "subtraction") {
-    speakText = `${num1} minus ${num2} equals what?`;
-}
-else if (operation === "multiplication") {
-    speakText = `${num1} multiplied by ${num2} equals what?`;
-}
-else if (operation === "division") {
-    speakText = `${num1} divided by ${num2} equals what?`;
-}
-
 
 window.speechSynthesis.onvoiceschanged = () => {
     window.speechSynthesis.getVoices();
@@ -96,6 +82,8 @@ window.onload = function () {
 
     goHome();
 
+    // unlock voice on mobile browsers
+    window.speechSynthesis.getVoices();
 };
 // =======================================
 // RajMauli Math Knowledge Test
@@ -169,6 +157,7 @@ function loadNextQuestion() {
 
     document.getElementById("progress").textContent =
         "Question " + currentQuestion + " / " + totalQuestions;
+
 
     document.getElementById("answerInput").value = "";
     document.getElementById("answerInput").focus();
@@ -248,8 +237,24 @@ else if (operation === "division") {
 }
     document.getElementById("timerDisplay").textContent =
         "⏳ " + timerValue;
+let speakText = "";
 
+if (operation === "addition") {
+    speakText = `${num1} plus ${num2} equals what?`;
+}
+else if (operation === "subtraction") {
+    speakText = `${num1} minus ${num2} equals what?`;
+}
+else if (operation === "multiplication") {
+    speakText = `${num1} multiplied by ${num2} equals what?`;
+}
+else if (operation === "division") {
+    speakText = `${num1} divided by ${num2} equals what?`;
+}
+// Speak AFTER small delay (IMPORTANT for mobile)
+setTimeout(() => {
     speak(speakText);
+}, 300);
 	startTimer();
 
 }
@@ -276,7 +281,7 @@ if (userAnswer === currentAnswer) {
 
     document.getElementById("questionBox").innerHTML =
         "<span style='color:green;'>🎉 Excellent! 🎉</span>";
-
+    speak("Correct! Excellent job!");
 } else {
 
     wrongAnswers++;
@@ -291,10 +296,11 @@ document.getElementById("questionBox").innerHTML =
         ${currentAnswer}
     </div>
     `;
+    speak(`Wrong. The correct answer is ${currentAnswer}`);
 }
 
     // Wait 0.8 seconds before loading the next question
-    setTimeout(loadNextQuestion, 800);
+    setTimeout(loadNextQuestion, 5000);
 
 }
 
@@ -401,7 +407,7 @@ function startTimer() {
             clearInterval(timerInterval);
 
             unanswered++;
-
+            speak("Time is up");
             loadNextQuestion();
         }
 
